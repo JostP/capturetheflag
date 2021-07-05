@@ -138,7 +138,7 @@ minetest.override_item("ctf_bandages:bandage", {
 
 local diggers = {}
 local DIG_COOLDOWN = 30
-local DIG_DIST_LIMIT = 50
+local DIG_DIST_LIMIT = 10
 local DIG_SPEED = 0.1
 
 local function isdiggable(name)
@@ -150,6 +150,7 @@ local function isdiggable(name)
 		name:find("glass" ) or name:find("ice"  ) or
 		name:find("snow"  )
 	)
+	or name:find("stairs:")
 end
 
 local function paxel_stop(pname, reason)
@@ -165,13 +166,16 @@ end
 local function remove_pillar(pos, pname)
 	local name = minetest.get_node(pos).name
 
-	if name:find("default") and isdiggable(name) then
+	if name:find("default") or name:find("stairs") and isdiggable(name) then
 		local player = minetest.get_player_by_name(pname)
 
 		minetest.dig_node(pos)
 
 		if player and diggers[pname] and type(diggers[pname]) ~= "table" then
-			if vector.distance(player:get_pos(), pos) <= DIG_DIST_LIMIT then
+			local distance = vector.subtract(player:get_pos(), pos)
+			-- Ignore vertical distance
+			distance.y = 0
+			if vector.length(distance) <= DIG_DIST_LIMIT then
 				pos.y = pos.y + 1
 				minetest.after(DIG_SPEED, remove_pillar, pos, pname)
 			else
