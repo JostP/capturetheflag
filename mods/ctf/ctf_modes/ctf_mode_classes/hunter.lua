@@ -45,28 +45,28 @@ local function stop_hunt(huntername, skip_item)
 end
 
 local function update_huds(hunter, hunted)
-	if not hunt_huds:exists(hunter, "hunted_mark") then
-		hunt_huds:add(hunter, "hunted_mark", {
+	if not hunt_huds:exists(hunter, "hunted_mark_"..hunted) then
+		hunt_huds:add(hunter, "hunted_mark_"..hunted, {
 			type = "image_waypoint",
 			image_scale = 1,
 			texture = "ctf_ranged_rifle_crosshair.png",
 			world_pos = core.get_player_by_name(hunted):get_pos():add(vector.new(0, 1, 0)),
 		})
 	else
-		hunt_huds:change(hunter, "hunted_mark", {
+		hunt_huds:change(hunter, "hunted_mark_"..hunted, {
 			world_pos = core.get_player_by_name(hunted):get_pos():add(vector.new(0, 1, 0)),
 		})
 	end
 
-	if not hunt_huds:exists(hunted, "hunter_mark") then
-		hunt_huds:add(hunted, "hunter_mark", {
+	if not hunt_huds:exists(hunted, "hunter_mark_"..hunter) then
+		hunt_huds:add(hunted, "hunter_mark_"..hunter, {
 			type = "image_waypoint",
 			image_scale = 2,
 			texture = "ctf_modebase_skull.png^[multiply:#FF1111",
 			world_pos = core.get_player_by_name(hunter):get_pos():add(vector.new(0, 1, 0)),
 		})
 	else
-		hunt_huds:change(hunted, "hunter_mark", {
+		hunt_huds:change(hunted, "hunter_mark_"..hunter, {
 			world_pos = core.get_player_by_name(hunter):get_pos():add(vector.new(0, 1, 0)),
 		})
 	end
