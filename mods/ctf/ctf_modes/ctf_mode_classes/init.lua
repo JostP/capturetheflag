@@ -44,6 +44,7 @@ custom_item_levels.axe    = prioritize_medic_paxel("axe"   )
 custom_item_levels.shovel = prioritize_medic_paxel("shovel")
 
 ctf_modebase.register_mode("classes", {
+	exclusive = true,
 	treasures = {
 		["default:ladder_wood" ] = {                max_count = 20, rarity = 0.3, max_stacks = 5},
 		["default:torch"       ] = {                max_count = 20, rarity = 0.3, max_stacks = 5},
