@@ -110,7 +110,7 @@ core.register_craftitem("ctf_mode_classes:hunter_token", {
 			local pname = hunting[username].hunting
 			update_huds(username, pname)
 
-			local existing = hunt_huds:get(pname)
+			local existing = hunt_huds:get(pname, "hunting_name")
 			local winfo = core.get_player_window_information(pname)
 			if not existing then
 				hunt_huds:add(pname, "hunting_name", {
