@@ -247,6 +247,16 @@ core.register_on_dieplayer(function(player, reason)
 		killed[pname] = nil
 	elseif hunting[pname] then
 		stop_hunt(pname)
+	else
+		for hunter, hunt in pairs(hunting) do
+			if hunt.hunting == pname then
+				hud_events.new(hunter, {
+					quick = true,
+					text = "Target died",
+				})
+				stop_hunt(hunter)
+			end
+		end
 	end
 end)
 
@@ -258,6 +268,10 @@ core.register_on_leaveplayer(function(player)
 	else
 		for hunter, hunt in pairs(hunting) do
 			if hunt.hunting == playername then
+				hud_events.new(hunter, {
+					quick = true,
+					text = "Target left the game",
+				})
 				stop_hunt(hunter)
 			end
 		end
