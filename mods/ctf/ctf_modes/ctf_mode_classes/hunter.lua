@@ -122,8 +122,8 @@ core.register_craftitem("ctf_mode_classes:hunter_token", {
 					text = "Hunted by: "..username,
 					color = 0xFF1111,
 					position = {x = 0.5, y = 1},
-					alignment = {x = "center", y = "up"},
-					offset = {x = 0, y = (-32 -32 -32 -16) * (winfo and winfo.real_hud_scaling or 1)},
+					alignment = {x = "right", y = "up"},
+					offset = {x = 6, y = (-32 -32 -32 -16) * (winfo and winfo.real_hud_scaling or 1)},
 				})
 			else
 				hunt_huds:change(pname, "hunting_name", {
@@ -134,10 +134,10 @@ core.register_craftitem("ctf_mode_classes:hunter_token", {
 			hunt_huds:add(username, "hunting", {
 				type = "text",
 				text = "Hunting: "..pname,
-				color = 0xFF1111,
+				color = 0x9df8e5,
 				position = {x = 0.5, y = 1},
-				alignment = {x = "center", y = "up"},
-				offset = {x = 0, y = (-32 -32 -32 -16) * (winfo and winfo.real_hud_scaling or 1)},
+				alignment = {x = "left", y = "up"},
+				offset = {x = -6, y = (-32 -32 -32 -16) * (winfo and winfo.real_hud_scaling or 1)},
 			})
 
 			return "ctf_mode_classes:hunter_token_hunting"
