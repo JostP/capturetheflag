@@ -243,6 +243,7 @@ core.register_on_dieplayer(function(player, reason)
 
 			hunter:set_hp(math.min(hunter:get_hp() + math.floor(hp_max * HEAL_AMOUNT), hp_max))
 		end
+
 		killed[pname] = nil
 	elseif hunting[pname] then
 		stop_hunt(pname)
@@ -261,4 +262,14 @@ core.register_on_leaveplayer(function(player)
 			end
 		end
 	end
+end)
+
+core.register_on_mods_loaded(function()
+	classes.register_on_class_change(function(player, class, oldclass)
+		local pname = PlayerName(player)
+
+		if oldclass == "hunter" and hunting[pname] then
+			stop_hunt(pname, true)
+		end
+	end)
 end)

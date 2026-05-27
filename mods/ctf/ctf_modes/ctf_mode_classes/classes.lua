@@ -3,7 +3,7 @@ ctf_gui.init()
 local cooldowns = ctf_core.init_cooldowns()
 local CLASS_SWITCH_COOLDOWN = 30
 
-local classes = {}
+classes = {}
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
@@ -413,10 +413,20 @@ function classes.update(player)
 	end
 end
 
+classes.registered_on_class_change = {}
+---@param func(player, class, oldclass)
+function classes.register_on_class_change(func)
+	table.insert(classes.registered_on_class_change, func)
+end
+
 function classes.set(player, classname)
-	if classname == classes.get_name(player) then
+	local oldclass = classes.get_name(player)
+
+	if classname == oldclass then
 		return
 	end
+
+	RunCallbacks(classes.registered_on_class_change, player, oldclass)
 
 	ctf_core.meta_set_string(player:get_player_name(), "class", classname)
 
