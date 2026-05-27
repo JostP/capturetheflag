@@ -206,7 +206,7 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
 	if hunting[hname] then
 		if hunting[hname].hunting == pname then
 			if tool_capabilities.damage_groups.fleshy then
-				tool_capabilities.damage_groups.fleshy = tool_capabilities.damage_groups.fleshy * (1 + DAMAGE_BUFF)
+				tool_capabilities.damage_groups.fleshy = tool_capabilities.damage_groups.fleshy * math.floor(1 + DAMAGE_BUFF)
 				tool_capabilities.damage_groups.hunter_modded = 1
 
 				if player:get_hp() - (damage * (1 + DAMAGE_BUFF)) <= 1 then
@@ -219,7 +219,7 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
 			end
 		else
 			if tool_capabilities.damage_groups.fleshy then
-				tool_capabilities.damage_groups.fleshy = tool_capabilities.damage_groups.fleshy * (1 - DAMAGE_NERF)
+				tool_capabilities.damage_groups.fleshy = tool_capabilities.damage_groups.fleshy * math.floor(1 - DAMAGE_NERF)
 				tool_capabilities.damage_groups.hunter_modded = 1
 
 				player:punch(hitter, time_from_last_punch, tool_capabilities, dir)
