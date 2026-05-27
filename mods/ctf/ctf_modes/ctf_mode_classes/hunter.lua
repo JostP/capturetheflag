@@ -12,7 +12,7 @@ local killed = {
 
 local MIN_DIST_FROM_FLAG = 10
 local DAMAGE_BUFF = 0.15
-local DAMAGE_NERF = 0.2
+local DAMAGE_NERF = 0.3
 local HEAL_AMOUNT = 0.4
 local HUNT_TIME = 60
 local HUNT_DISTANCE = 100
@@ -82,7 +82,7 @@ core.register_craftitem("ctf_mode_classes:hunter_token", {
 		"Use to start hunting a random player within "..HUNT_DISTANCE.." nodes from you\n"..
 		"The hunt ends after "..HUNT_TIME.."s, or if the target goes near their flag\n"..
 		"You deal "..(DAMAGE_BUFF*100).."% more damage to hunted players, and "..
-			(DAMAGE_NERF*100).."% less to everyone else\n"..
+			(DAMAGE_NERF*100).."% less to everyone else (grenades ignore buffs/nerfs)\n"..
 		"Killing your mark heals "..(HEAL_AMOUNT*100).."% of your hp\n",
 	inventory_image = "binoculars_binoculars.png^ctf_modebase_special_item.png",
 	on_use = function(itemstack, user, pointed_thing)
@@ -205,7 +205,7 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
 
 	if hunting[hname] then
 		if hunting[hname].hunting == pname then
-			if tool_capabilities.damage_groups.fleshy then
+			if tool_capabilities.damage_groups.fleshy and not tool_capabilities.damage_groups.grenade then
 				tool_capabilities.damage_groups.fleshy = tool_capabilities.damage_groups.fleshy * math.floor(1 + DAMAGE_BUFF)
 				tool_capabilities.damage_groups.hunter_modded = 1
 
@@ -218,7 +218,7 @@ core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool
 				return true
 			end
 		else
-			if tool_capabilities.damage_groups.fleshy then
+			if tool_capabilities.damage_groups.fleshy and not tool_capabilities.damage_groups.grenade then
 				tool_capabilities.damage_groups.fleshy = tool_capabilities.damage_groups.fleshy * math.floor(1 - DAMAGE_NERF)
 				tool_capabilities.damage_groups.hunter_modded = 1
 
@@ -246,7 +246,7 @@ core.register_on_dieplayer(function(player, reason)
 
 		killed[pname] = nil
 	elseif hunting[pname] then
-		stop_hunt(pname)
+		stop_hunt(pname, true)
 	else
 		for hunter, hunt in pairs(hunting) do
 			if hunt.hunting == pname then
