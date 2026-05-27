@@ -6,6 +6,9 @@ local hunting = {
 	}
 	--]]
 }
+local killed = {
+	-- huntername,
+}
 
 local MIN_DIST_FROM_FLAG = 10
 local DAMAGE_BUFF = 0.15
@@ -28,6 +31,7 @@ local function stop_hunt(huntername, skip_item)
 	hunt_huds:remove(huntername)
 	hunt_huds:remove(hunting[huntername].hunting)
 
+	killed[hunting[huntername].hunting] = nil
 	hunting[huntername] = nil
 
 	if not skip_item then
@@ -193,7 +197,6 @@ core.register_globalstep(function(dtime)
 	end
 end)
 
-local killed = {}
 core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
 	if tool_capabilities.damage_groups.hunter_modded == 1 then return end
 
@@ -240,6 +243,7 @@ core.register_on_dieplayer(function(player, reason)
 
 			hunter:set_hp(math.min(hunter:get_hp() + math.floor(hp_max * HEAL_AMOUNT), hp_max))
 		end
+		killed[pname] = nil
 	elseif hunting[pname] then
 		stop_hunt(pname)
 	end
