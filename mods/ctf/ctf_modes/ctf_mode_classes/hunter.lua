@@ -254,7 +254,6 @@ core.register_on_leaveplayer(function(player)
 		for hunter, hunt in pairs(hunting) do
 			if hunt.hunting == playername then
 				stop_hunt(hunter)
-				break
 			end
 		end
 	end
