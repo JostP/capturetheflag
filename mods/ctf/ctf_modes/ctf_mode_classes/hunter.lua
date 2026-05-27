@@ -245,17 +245,19 @@ core.register_on_dieplayer(function(player, reason)
 		end
 
 		killed[pname] = nil
-	elseif hunting[pname] then
+	end
+
+	if hunting[pname] then
 		stop_hunt(pname, true)
-	else
-		for hunter, hunt in pairs(hunting) do
-			if hunt.hunting == pname then
-				hud_events.new(hunter, {
-					quick = true,
-					text = "Target died",
-				})
-				stop_hunt(hunter)
-			end
+	end
+
+	for hunter, hunt in pairs(hunting) do
+		if hunt.hunting == pname then
+			hud_events.new(hunter, {
+				quick = true,
+				text = "Target died",
+			})
+			stop_hunt(hunter)
 		end
 	end
 end)
